@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redis Events - API Tester</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <div id="toastContainer"></div>
+
+    <nav class="navbar">
+        <h1>Redis Events</h1>
+        <div class="nav-right">
+            <div class="email-bar">
+                <span>Email:</span>
+                <input type="email" id="globalEmail" placeholder="user@aueb.gr">
+            </div>
+            <label class="admin-toggle">
+                <input type="checkbox" id="adminToggle" onchange="toggleAdmin()">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                <span>Admin</span>
+            </label>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- Response -->
+        <div class="response-box">
+            <div class="response-top">
+                <span>Response</span>
+                <span class="status-pill" id="statusPill"></span>
+            </div>
+            <pre id="result">Ready...</pre>
+        </div>
+
+        <!-- 1. Setup -->
+        <div class="section">
+            <h2>1. Setup</h2>
+            <p class="desc">Create test events and load them into Redis, or view what's currently active.</p>
+            <div class="actions">
+                <button class="btn green admin-only" onclick="seedData()">Create 3 Test Events</button>
+                <button class="btn" onclick="getEvents()">Show Active Events</button>
+            </div>
+            <div id="eventsList"></div>
+        </div>
+
+        <!-- 2. Event Control (Admin only) -->
+        <div class="section admin-only">
+            <h2>2. Start / Stop Event</h2>
+            <p class="desc">Manually activate or deactivate an event by its ID.</p>
+            <label>Event ID</label>
+            <input type="text" id="ssEventId" placeholder="evt-001">
+            <div class="actions">
+                <button class="btn green" onclick="startEvent()">Start Event</button>
+                <button class="btn red" onclick="stopEvent()">Stop Event</button>
+            </div>
+        </div>
+
+        <!-- 3. Check-in / Check-out -->
+        <div class="section">
+            <h2>3. Check-in / Check-out</h2>
+            <p class="desc">Join or leave an event. Uses the email from the top bar.</p>
+            <label>Event ID</label>
+            <input type="text" id="ccEventId" placeholder="evt-003">
+            <div class="actions">
+                <button class="btn green" onclick="doCheckin()">Join Event</button>
+                <button class="btn red" onclick="doCheckout()">Leave Event</button>
+                <button class="btn admin-only" onclick="doCheckinAdmin()">Join (Admin)</button>
+                <button class="btn admin-only" onclick="doCheckoutAdmin()">Remove (Admin)</button>
+            </div>
+        </div>
+
+        <!-- 4. Find Events -->
+        <div class="section">
+            <h2>4. Find Events Nearby</h2>
+            <p class="desc">Search for events within range of a GPS location that the user is allowed to access.</p>
+            <div class="row">
+                <div>
+                    <label>Latitude</label>
+                    <input type="text" id="feLat" placeholder="37.9838" value="37.9838">
+                </div>
+                <div>
+                    <label>Longitude</label>
+                    <input type="text" id="feLon" placeholder="23.7275" value="23.7275">
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn blue" onclick="findEvents()">Search Nearby</button>
+            </div>
+        </div>
+
+        <!-- 5. Participants -->
+        <div class="section">
+            <h2>5. Participants</h2>
+            <p class="desc">View who has joined an event or get the total count.</p>
+            <label>Event ID</label>
+            <input type="text" id="partEventId" placeholder="evt-003">
+            <div class="actions">
+                <button class="btn" onclick="getParticipants()">View Participants</button>
+                <button class="btn" onclick="numParticipants()">Count Participants</button>
+            </div>
+        </div>
+
+        <!-- 6. Chat -->
+        <div class="section">
+            <h2>6. Chat</h2>
+            <p class="desc">Post messages to an event's chat room (must be a participant). View all posts or filter by user.</p>
+            <label>Event ID</label>
+            <input type="text" id="chatEventId" placeholder="evt-003">
+            <label>Message</label>
+            <textarea id="chatText" rows="2" placeholder="Hello everyone..."></textarea>
+            <div class="actions">
+                <button class="btn green" onclick="postToChat()">Send Message</button>
+                <button class="btn" onclick="getPosts()">View All Messages</button>
+                <button class="btn" onclick="getUserPosts()">View My Messages</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
